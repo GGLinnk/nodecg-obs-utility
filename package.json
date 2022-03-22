@@ -1,0 +1,58 @@
+{
+  "name": "@nodecg-obs/utility",
+  "version": "6.2.0",
+  "description": "A NodeCG utility that exposes a set of Replicants, Messages, and other hooks for interacting with OBS via obs-websocket",
+  "homepage": "https://github.com/GGLinnk/nodecg-obs-utility",
+  "bugs": {
+    "url" : "https://github.com/GGLinnk/nodecg-obs-utility/issues"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "nyc ava",
+    "build": "npm-run-all build:*",
+    "build:schemas": "nodecg schema-types --out-dir types/schemas",
+    "build:ts": "tsc -p tsconfig.json"
+  },
+  "author": {
+    "name": "Gabriel GRONDIN (GGLinnk)",
+    "email": "gglinnk@protonmail.com",
+    "url": "https://gglinnk.virtualworld.fr/",
+    "twitter": "GGLinnk"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "clone": "^2.1.2",
+    "obs-websocket-js": "^4.0.3"
+  },
+  "devDependencies": {
+    "@supportclass/tsconfig-nodecg-client": "^1.0.4",
+    "@supportclass/tsconfig-nodecg-server": "^1.0.4",
+    "@types/clone": "^2.1.1",
+    "@types/node": "^17.0.22",
+    "ava": "^4.1.0",
+    "mock-nodecg": "^1.8.1",
+    "mockery": "^2.1.0",
+    "nodecg": "^1.8.1",
+    "nodecg-cli": "^8.0.0",
+    "npm-run-all": "^4.1.5",
+    "nyc": "^15.1.0",
+    "typescript": "^4.6.2"
+  },
+  "keywords": [
+    "nodecg",
+    "utility",
+    "helper",
+    "obs",
+    "obs-websocket",
+    "obs-websocket-js"
+  ],
+  "files": [
+    "dist",
+    "types",
+    "schemas/**/*.json"
+  ],
+  "engines": {
+    "node": ">=16"
+  }
+}
