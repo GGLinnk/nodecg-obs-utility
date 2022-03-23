@@ -106,29 +106,17 @@ export class OBSUtility extends OBSWebSocket {
 			this._ignoreConnectionClosedEvents = false;
 			clearInterval(this._reconnectInterval!);
 			this._reconnectInterval = null;
+
 			websocketConfig.value.ip = params.ip;
 			websocketConfig.value.port = parseInt(params.port, 10);
 			websocketConfig.value.password = params.password;
-			this._connectToOBS().then(() => {
+
+			this._connectToOBS().then(res => {
 				if (callback && !callback.handled) {
-					callback();
+					callback(null, res);
 				}
 			}).catch(err => {
-				websocketConfig.value.status = 'error';
-				log.error('Failed to connect:', err);
-
-				if (!callback || callback.handled) {
-					return;
-				}
-
-				/* istanbul ignore else: this is just an overly-safe way of logging these critical errors */
-				if (err.error && typeof err.error === 'string') {
-					callback(err.error);
-				} else if (err.message) {
-					callback(err.message);
-				} else if (err.code) {
-					callback(err.code);
-				} else {
+				if (callback && !callback.handled) {
 					callback(err);
 				}
 			});
@@ -138,13 +126,16 @@ export class OBSUtility extends OBSWebSocket {
 			this._ignoreConnectionClosedEvents = true;
 			clearInterval(this._reconnectInterval!);
 			this._reconnectInterval = null;
-			websocketConfig.value.status = 'disconnected';
-			this.disconnect();
-			log.info('Operator-requested disconnect.');
-
-			if (callback && !callback.handled) {
-				callback();
-			}
+			
+			this._disconnectFromOBS().then(res => {
+				if (callback && !callback.handled) {
+					callback(null, res);
+				}
+			}).catch(err => {
+				if (callback && !callback.handled) {
+					callback(err);
+				}
+			});
 		});
 
 		nodecg.listenFor(`${namespace}:previewScene`, async (sceneName, callback) => {
@@ -334,22 +325,46 @@ export class OBSUtility extends OBSWebSocket {
 	 */
 	_connectToOBS() {
 		const websocketConfig = this.replicants.websocket;
+
 		if (websocketConfig.value.status === 'connected') {
-			throw new Error('Attempted to connect to OBS while already connected!');
+			return Promise.reject(new Error("Already connected! Cannot connect again."));
+		} else if (websocketConfig.value.status === 'connecting') {
+			return Promise.reject(new Error("Please wait! Connection already in progress!"));
 		}
 
 		websocketConfig.value.status = 'connecting';
 
 		return this.connect({
 			address: `${websocketConfig.value.ip}:${websocketConfig.value.port}`,
-			password: websocketConfig.value.password
+			password: websocketConfig.value.password,
+			secure: websocketConfig.value.secure
 		}).then(() => {
-			this.log.info('Connected.');
-			clearInterval(this._reconnectInterval!);
-			this._reconnectInterval = null;
 			websocketConfig.value.status = 'connected';
-			return this._fullUpdate();
+			this._fullUpdate();
+			
+			return Promise.resolve("OBS websocket sucessfully connected.");
+		}).catch(() => {
+			websocketConfig.value.status = 'error';	
 		});
+	}
+
+	/**
+	 * Disconnects from OBS Studio via obs-websocket.
+	 * @returns {Promise}
+	 */
+	_disconnectFromOBS() {
+		const websocketConfig = this.replicants.websocket;
+
+		if (websocketConfig.value.status === 'disconnected') {
+			return Promise.reject(new Error("Already disconnected! Cannot disconnect."));
+		} else if (websocketConfig.value.status === 'connecting') {
+			return Promise.reject(new Error("Connection in progress! Please wait before disconnecting."));
+		}
+
+		this.disconnect();
+		websocketConfig.value.status = 'disconnected';
+		
+		return Promise.resolve("OBS websocket sucessfully disconnected.");
 	}
 
 	/**
@@ -370,7 +385,10 @@ export class OBSUtility extends OBSWebSocket {
 		websocketConfig.value.status = 'connecting';
 		this.log.warn('Connection closed, will attempt to reconnect every 5 seconds.');
 		this._reconnectInterval = setInterval(() => {
-			this._connectToOBS().catch(/* istanbul ignore next */() => {}); // Intentionally discard error messages -- bit dangerous.
+			this._connectToOBS().then(() => {
+				clearInterval(this._reconnectInterval!);
+				this._reconnectInterval = null;
+			});
 		}, 5000);
 	}
 

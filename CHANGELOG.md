@@ -15,6 +15,22 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 - **``Security``** in case of vulnerabilities.
 
 
+## **[Unreleased]**
+### Added
+* Websocket ``secure`` boolean is now passed part of the connection process.
+
+### Changed
+* Code refactored. Some behaviour have been changed.
+  - A result message is sended to callback when connected/disconnected successfully.
+  - An error message is sended to callback when connected/disconnected unsuccessfully.
+
+### Removed
+* Istanbul workarounds have been removed.
+
+### Fixed
+* Does not crash or throw error anymore when trying to connect when already connected.
+
+
 ## **[6.2.0] - 2022-03-22**
 ### Security
 * **Critical** Upgraded all dependencies
@@ -23,6 +39,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * AddsourceList replicant
 
 
+[Unreleased]: https://github.com/GGLinnk/nodecg-obs-utility/compare/v6.2.0...HEAD
 [6.2.0]: https://github.com/GGLinnk/nodecg-obs-utility/releases/tag/v6.2.0
 
 > **Warning:** Everything below this note is under a different changelog standard
