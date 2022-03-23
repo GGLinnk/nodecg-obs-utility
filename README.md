@@ -30,7 +30,7 @@ cd my-nodecg/bundles/your-bundle
 
 2. Add to your bundle
 ```
-npm install @nodecg-obs/nodecg-obs-utility
+npm install @nodecg-obs/utility
 ```
 
 
@@ -42,7 +42,7 @@ This project is under MIT License. See [LICENSE]
 For full documentation, see the [wiki]
 
 
-[LICENSE]: https://github.com/GGLinnk/nodecg-obs-utility/LICENSE
+[LICENSE]: LICENSE
 [`nodecg-obs-utility`]: https://github.com/GGLinnk/nodecg-obs-utility/
 [`nodecg-utility-obs`]: https://github.com/nodecg/nodecg-obs/tree/master/packages/nodecg-utility-obs
 [`obs-websocket-js`]: https://github.com/obs-websocket-community-projects/obs-websocket-js

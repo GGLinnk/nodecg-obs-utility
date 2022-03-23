@@ -23,7 +23,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 * AddsourceList replicant
 
 
-[6.2.0]: https://github.com/GGLinnk/nodecg-obs-utility/compare/v6.1.7...v6.2.0
+[6.2.0]: https://github.com/GGLinnk/nodecg-obs-utility/releases/tag/v6.2.0
 
 > **Warning:** Everything below this note is under a different changelog standard
 
