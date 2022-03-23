@@ -1,10 +1,10 @@
 {
   "name": "@nodecg-obs/utility",
-  "version": "6.2.0",
+  "version": "6.2.1",
   "description": "A NodeCG utility that exposes a set of Replicants, Messages, and other hooks for interacting with OBS via obs-websocket",
   "homepage": "https://github.com/GGLinnk/nodecg-obs-utility",
   "bugs": {
-    "url" : "https://github.com/GGLinnk/nodecg-obs-utility/issues"
+    "url": "https://github.com/GGLinnk/nodecg-obs-utility/issues"
   },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
