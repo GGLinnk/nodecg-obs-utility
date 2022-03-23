@@ -64,25 +64,25 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
-  publish-github:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: Download production build artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: nodejs-app-build
-
-      - name: Setup NodeJS
-        uses: actions/setup-node@v2
-        with:
-          node-version: 16
-          registry-url: https://npm.pkg.github.com/
-
-      - name: Publish NPM NodeJS package
-        run: npm publish --access public
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+#  publish-github:
+#    needs: build
+#    runs-on: ubuntu-latest
+#    permissions:
+#      contents: read
+#      packages: write
+#    steps:
+#      - name: Download production build artifacts
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: nodejs-app-build
+#
+#      - name: Setup NodeJS
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: 16
+#          registry-url: https://npm.pkg.github.com/
+#
+#      - name: Publish NPM NodeJS package
+#        run: npm publish --access public
+#        env:
+#          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
