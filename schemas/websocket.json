@@ -25,6 +25,10 @@
 			"type": "string",
 			"default": ""
 		},
+		"secure": {
+			"type": "boolean",
+			"default": false
+		},
 		"status": {
 			"$ref": "#/definitions/Status"
 		}

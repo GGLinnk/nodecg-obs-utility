@@ -14,5 +14,6 @@ export interface Websocket {
 	ip: string;
 	port: number;
 	password: string;
+	secure?: boolean;
 	status: Status;
 }
