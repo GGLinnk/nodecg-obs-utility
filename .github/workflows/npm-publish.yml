@@ -1,0 +1,88 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+
+name: NodeJS App Package Publish
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Clean install NodeJS app packages
+        run: npm ci
+
+#     - name: Pre-Test NodeJS app
+#       run: npm pretest
+
+      - name: Build NodeJS app
+        run: npm run build
+
+#     - name: Test NodeJS app
+#       run: npm test
+
+      - name: Upload production build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: nodejs-app-build
+          path: |
+            README.md
+            CHANGELOG.md
+            LICENSE
+            package.json
+            dist/
+            schemas/**/*.json
+            types/
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download production build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nodejs-app-build
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+
+      - name: Publish NPM NodeJS package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
+  publish-github:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Download production build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: nodejs-app-build
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+
+      - name: Publish NPM NodeJS package
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
