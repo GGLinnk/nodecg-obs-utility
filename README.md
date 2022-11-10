@@ -1,3 +1,7 @@
+*NO LONGER MAINTAINED*
+- *WILL PROBABLY BE REWRITTEN SOON*
+- *FULL OF VULNERABILITIES. AVOID USAGE*
+
 # NodeCG OBS Utility
 
 [![CodeQL](https://github.com/GGLinnk/nodecg-obs-utility/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/GGLinnk/nodecg-obs-utility/actions/workflows/codeql-analysis.yml) [![NPM Version](https://img.shields.io/npm/v/@nodecg-obs/utility.svg)](https://www.npmjs.com/package/@nodecg-obs/utility)
